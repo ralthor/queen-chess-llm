@@ -1,0 +1,25 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "queen-site",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "8000",
+        "--directory",
+        "site"
+      ],
+      "port": 8000
+    },
+    {
+      "name": "queen-ui",
+      "runtimeExecutable": ".venv/bin/python",
+      "runtimeArgs": [
+        "server.py"
+      ],
+      "port": 8765
+    }
+  ]
+}

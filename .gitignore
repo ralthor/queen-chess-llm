@@ -1,0 +1,15 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Model weights (~8 GB), downloaded from Hugging Face
+models/
+
+# Upstream repos, cloned separately (see README)
+queen/
+site/
+
+# Scratch outputs from run_queen.py
+out_*.json
+out_*.log

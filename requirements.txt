@@ -1,0 +1,10 @@
+# Runtime dependencies for queen_engine.py, server.py and run_queen.py.
+# Versions are the ones this was tested with (Python 3.14, CUDA 13).
+# For a CUDA build of torch, install it first from https://pytorch.org.
+torch==2.13.0
+transformers==5.15.0
+accelerate==1.15.0
+bitsandbytes==0.50.2
+safetensors==0.8.0
+numpy==2.5.4
+chess==1.11.2

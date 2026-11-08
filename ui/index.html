@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Queen Analysis Board</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chessground@9.2.1/assets/chessground.base.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chessground@9.2.1/assets/chessground.brown.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chessground@9.2.1/assets/chessground.cburnett.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand"><span class="logo">♛</span> Queen <span class="sub">local analysis board</span></div>
+  <div id="status" class="status"><span class="dot"></span><span id="status-text">connecting…</span></div>
+</header>
+
+<main class="layout">
+  <!-- Left: board -->
+  <section class="board-col">
+    <div class="board-row">
+      <div id="evalbar" class="evalbar" title="Queen's evaluation">
+        <div id="evalbar-white" class="evalbar-white"></div>
+        <span id="evalbar-label" class="evalbar-label">0.0</span>
+      </div>
+      <div class="board-wrap">
+        <div id="board" class="board"></div>
+        <div id="sqnums" class="sqnums" hidden></div>
+        <div id="preview-badge" class="preview-badge" hidden>
+          <span id="preview-text">Previewing line</span>
+          <button id="preview-exit" class="link">Back to game <kbd>Esc</kbd></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="controls">
+      <button id="btn-analyze" class="primary">Analyze position</button>
+      <button id="btn-stop" hidden>Stop</button>
+      <button id="btn-play" disabled title="Play Queen's best move on the board">Play best move</button>
+    </div>
+    <div class="controls small">
+      <button id="btn-back" title="Previous move (←)">◀</button>
+      <button id="btn-fwd" title="Next move (→)">▶</button>
+      <button id="btn-flip" title="Flip board">Flip</button>
+      <button id="btn-new">New game</button>
+      <label class="select">Queen plays
+        <select id="queen-side">
+          <option value="">nobody (analyze only)</option>
+          <option value="b">Black</option>
+          <option value="w">White</option>
+        </select>
+      </label>
+    </div>
+    <div class="turn-line" id="turn-line"></div>
+    <div id="movelist" class="movelist"></div>
+    <form id="fen-form" class="fen-form">
+      <input id="fen-input" spellcheck="false" aria-label="FEN" placeholder="Paste a FEN and press Load">
+      <button type="submit">Load</button>
+    </form>
+  </section>
+
+  <!-- Right: analysis -->
+  <section class="analysis-col">
+    <div class="cards">
+      <div class="card best">
+        <div class="card-label">Best move</div>
+        <div id="best-move" class="best-move muted">—</div>
+        <div id="best-source" class="card-foot"></div>
+      </div>
+      <div class="card evalcard">
+        <div class="card-label">Evaluation</div>
+        <div id="eval-number" class="eval-number muted">—</div>
+        <div id="eval-text" class="card-foot"></div>
+      </div>
+      <div class="card promising">
+        <div class="card-label">Candidates <span class="hint">hover to draw</span></div>
+        <div id="promising" class="chips muted">—</div>
+      </div>
+    </div>
+
+    <div class="card line-card">
+      <div class="card-label">Critical line <span class="hint">the variation Queen expects</span></div>
+      <div id="critical" class="chips line muted">—</div>
+      <div class="stepper">
+        <button id="step-first" title="Start">⏮</button>
+        <button id="step-prev" title="Previous">◀</button>
+        <button id="step-play" title="Play through">▶ Play line</button>
+        <button id="step-next" title="Next">▶</button>
+        <span id="step-pos" class="hint"></span>
+      </div>
+    </div>
+
+    <div class="card prose-card">
+      <div class="prose-head">
+        <div class="card-label">Queen's reasoning</div>
+        <div class="toggles">
+          <label class="switch"><input type="checkbox" id="tog-raw"> Raw tokens</label>
+          <label class="switch"><input type="checkbox" id="tog-nums"> Square numbers</label>
+        </div>
+      </div>
+      <div id="progress" class="progress" hidden>
+        <div class="progress-bar"><div id="progress-fill"></div></div>
+        <span id="progress-text"></span>
+      </div>
+      <div id="prose" class="prose">
+        <p class="muted">Make a move or press <b>Analyze position</b>. Queen writes its analysis
+          in its own token notation; every move it mentions becomes a chip here.
+          <b>Hover a chip</b> to see that moment of the line on the board, <b>click</b> to step into it.</p>
+      </div>
+    </div>
+
+    <details class="card legend" id="legend">
+      <summary>How to read Queen's notation</summary>
+      <div class="legend-body">
+        <p>Queen doesn't write <i>Nf6</i>. It describes the board with 77 special tokens,
+          always from the point of view of <b>the side to move</b> (“me”):</p>
+        <div class="legend-grid">
+          <div><code>&lt;PIECE_M?&gt;</code> my piece, <code>&lt;PIECE_O?&gt;</code> opponent's piece;
+            <code>?</code> is P N B R Q K.</div>
+          <div><code>&lt;SQUARE_n&gt;</code> square <i>n</i> = 1…64, counted from my bottom-left corner
+            (a1 for White, a8 for Black). Turn on <b>Square numbers</b> to see them on the board.</div>
+          <div>A move is <code>piece · from · [captured piece] · to · [promotion]</code>.
+            Castling is the king moving two squares.</div>
+        </div>
+        <div id="legend-example" class="legend-example"></div>
+      </div>
+    </details>
+  </section>
+</main>
+
+<script type="module" src="app.js"></script>
+</body>
+</html>
